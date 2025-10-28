@@ -1,15 +1,14 @@
-from rest_framework import generics, viewsets
+# api/views.py
+from rest_framework import viewsets, permissions
 from .models import Book
 from .serializers import BookSerializer
 
-class BookList(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
 class BookViewSet(viewsets.ModelViewSet):
     """
-    A viewset that provides the standard actions
-    for the Book model — list, create, retrieve, update, and destroy.
+    A viewset for managing Book instances.
+    Only authenticated users can create, update, or delete books.
+    Everyone can view (GET) books.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
